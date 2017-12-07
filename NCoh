@@ -4,11 +4,7 @@ Spyder Editor
 
 This is a temporary script file.
 """
-"""
-TODO: 
-    currently only works if the first node, is the "chosen" one
-    if we set s to a different node, see what happens
-"""
+
 import numpy as np
 import array
 import random
@@ -19,12 +15,12 @@ def harmony(v,w):           # computes harmony of a given instance
             h += w[x][y] * v[x] * v[y]
     print(h)
     return h
-s = 0       #which node is set to 1 on default
+s = 3 
 d = 0.05
 max = 1
 min = -1
-v = np.array([1,0.1,0.1,0.1]);
-w = np.arange(4.0*4.0).reshape(4,4)
+v = np.array([0.1,0.1,0.1,0.1,1]);
+w = np.arange(5.0*5.0).reshape(5,5)
 
 for x in range(0,v.size):
     for y in range(0,v.size):   
@@ -35,11 +31,11 @@ for x in range(0,v.size):
             
 np.fill_diagonal(w, 0)  #selfdirected weights are 0 
 h1 = 0.0
-for x in range(200): #200 cycles
-    print(x)
-    for x in range(1,v.size):
-    
-        y = np.dot(w[x-1:x],v) #net(v) value from slides
+print(w)
+for c in range(200): #200 cycles
+    print(c)
+    for x in range(0,v.size):
+        y = np.dot(w[x:x+1],v) #net(v) value from slides
         if (y>0): 
             v[x] = v[x]*(1-d) + (y*(max - v[x])) #update rule from slides
             if(v[x] > 1):
@@ -52,8 +48,9 @@ for x in range(200): #200 cycles
                 v[x] = 1
             if(v[x] < -1):
                 v[x] = -1
+        v[s] = 1
     h2 = harmony(v,w)
-    if((h2 - h1) > 0.01):
+    if((h2 - h1) > 0.001):
         h1 = h2
     else:
         print(h1)
